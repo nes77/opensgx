@@ -62,6 +62,9 @@ test/tor/%.o: test/tor/%.c
 test/%.o: test/%.c
 	$(CC) -c $(SGX_CFLAGS) -o $@ $<
 
+demo/notary.o: demo/notary.c
+	$(CC) -c $(OPENSSL_CFLAGS) -o $@ $<
+
 demo/%.o: demo/%.c
 	$(CC) -c $(SGX_CFLAGS) -o $@ $<
 
@@ -73,6 +76,9 @@ test/tor/%: test/tor/%.o $(OPENSSL_LIBS)
 
 test/%: test/%.o $(SGX_LIBS)
 	$(CC) $(SGX_LDFLAGS) $< -o $@ $(SGX_LIBS)
+
+demo/notary.sgx: demo/notary.o $(OPENSSL_LIBS)
+	$(CC) $(SGX_LDFLAGS) $< -o $@ $(OPENSSL_LIBS)
 
 demo/%.sgx: demo/%.o $(SGX_LIBS)
 	$(CC) $(SGX_LDFLAGS) $< -o $@ $(SGX_LIBS)
