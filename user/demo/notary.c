@@ -136,7 +136,7 @@ static int gen_hash_file(sgx_keydata* key, const char* filename, char* hash) {
     free(out);
     fclose(out_file);
     
-    return (ret == 1);
+    return (ret == 1) ? 0 : 1;
 }
 
 static int read_hash_file(sgx_keydata* key, const char* filename, char* hash) {
@@ -278,6 +278,10 @@ static int gen_sign_key(sgx_keydata* key, RSA** rsa) {
     }
 
     RSA_generate_key_ex(*rsa, bits, bne, NULL);    
+
+    if ((*rsa) != NULL) {
+        out = 0;
+    }
 
     gen_clean:
     BN_free(bne);
